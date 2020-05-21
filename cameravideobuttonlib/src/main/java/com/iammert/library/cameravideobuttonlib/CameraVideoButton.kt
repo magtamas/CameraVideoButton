@@ -219,7 +219,6 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
             return
         }
 
-        isRecording = false
         endRecordTime = System.currentTimeMillis()
 
         innerCircleLongPressValueAnimator.setFloatValues(innerCircleCurrentSize, innerCircleMaxSize)
@@ -239,6 +238,7 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
             actionListener?.onEndRecord()
         }
 
+        isRecording = false
         resetRecordingValues()
     }
 
