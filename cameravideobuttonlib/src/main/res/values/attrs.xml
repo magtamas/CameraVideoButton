@@ -3,6 +3,7 @@
 
     <declare-styleable name="CameraVideoButton">
         <attr name="cvb_recording_color" format="color"/>
+        <attr name="cvb_border_width" format="dimension"/>
     </declare-styleable>
 
 </resources>

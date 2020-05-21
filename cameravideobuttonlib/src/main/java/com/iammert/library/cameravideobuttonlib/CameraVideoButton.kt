@@ -57,13 +57,13 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
     private var innerCirclePaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
-        color = Color.WHITE
+        color = Color.RED
     }
 
     private var outerCirclePaint = Paint().apply {
         isAntiAlias = true
         style = Paint.Style.FILL
-        color = Color.WHITE
+        color = Color.RED
         alpha = 100
     }
 
@@ -73,7 +73,7 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
         color = recordingColor
         strokeWidth = borderWidth
         style = Paint.Style.STROKE
-        strokeCap = Paint.Cap.ROUND
+        strokeCap = Paint.Cap.SQUARE
         strokeJoin = Paint.Join.ROUND
         pathEffect = CornerPathEffect(30f)
     }
@@ -143,7 +143,9 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
     init {
         val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.CameraVideoButton, defStyleAttr, defStyleAttr)
         recordingColor = typedArray.getColor(R.styleable.CameraVideoButton_cvb_recording_color, Color.WHITE)
+        borderWidth = typedArray.getDimension(R.styleable.CameraVideoButton_cvb_border_width, context.resources.getDimension(R.dimen.cvb_border_width))
         outerCircleBorderPaint.color = recordingColor
+        outerCircleBorderPaint.strokeWidth = borderWidth
         typedArray.recycle()
     }
 
@@ -253,14 +255,14 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
         super.onSizeChanged(w, h, oldw, oldh)
         val minSide = Math.min(w, h)
 
-        innerCircleMaxSize = minSide.toFloat() / 2
-        innerCircleMinSize = minSide.toFloat() / 4
+        innerCircleMaxSize = minSide.toFloat()
+        innerCircleMinSize = minSide.toFloat() / 2 - borderWidth / 2
         innerCircleCurrentSize = innerCircleMaxSize
 
         innerCircleSingleTapValueAnimator.setFloatValues(innerCircleMaxSize, innerCircleMinSize, innerCircleMaxSize)
 
         outerCircleMaxSize = minSide.toFloat()
-        outerCircleMinSize = minSide.toFloat() / 1.5f
+        outerCircleMinSize = minSide.toFloat()
         outerCircleCurrentSize = outerCircleMinSize
 
         outerCircleBorderRect.set(
@@ -284,7 +286,7 @@ class CameraVideoButton @JvmOverloads constructor(context: Context, attrs: Attri
         canvas.drawCircle(outerCircleMaxSize / 2, outerCircleMaxSize / 2, outerCircleCurrentSize / 2, outerCirclePaint)
 
         if (isRecording) {
-            canvas.drawArc(outerCircleBorderRect, -90f, calculateCurrentAngle(), false, outerCircleBorderPaint)
+            canvas.drawArc(outerCircleBorderRect, 90f, calculateCurrentAngle(), false, outerCircleBorderPaint)
         }
     }
 
